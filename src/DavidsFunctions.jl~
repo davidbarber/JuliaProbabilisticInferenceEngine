@@ -1,0 +1,354 @@
+module DavidsFunctions
+# General helper functions:
+
+import Base.vec
+function vec(v::Integer)
+    return vec([v])
+end
+export vec
+
+function maxarray(A)
+    p,q,r=findnz(A)
+    return maximum(r)
+end
+export maxarray
+
+function SparseIntMatrix(M,N)
+    return sparse(fill(0,M,N))
+end
+export SparseIntMatrix
+
+export fillmatrix!
+function  fillmatrix!(A,indsi,indsj,val)
+    for i=indsi
+        for j=indsj
+            A[i,j]=val
+        end
+    end
+    return A
+end
+
+
+export states
+function states(ns)
+    # enumerate all states eg states([2 2 3]) (like ind2subv.m)
+    # first index changes the most (lie matlab)
+    ns=fliplr(ns)
+    n=length(ns)
+    nstates=prod(vec(ns))
+    c=cumprod(vec(ns[end:-1:1]))
+    c=vcat(1,c[1:end-1])
+    s=Array(Int64,nstates,n)
+    for i=1:nstates
+        tmp=i-1
+        for j=n:-1:1
+            s[i,n+1-j]=floor(tmp/c[j])
+            tmp=tmp-s[i,n+1-j]*c[j]
+        end
+    end
+    return fliplr(s.+1)
+end
+
+
+
+function standardise{T<:Number}(A::Array{T,})
+    # If the array is a vector, make this a column vector, otherwise leave unchanged
+    if isavector(A)
+        A=vec(A)
+    end
+    return A
+end
+export standardise
+
+
+function mysize(a)
+    a=standardise(a)
+    s=size(a)
+    if isavector(a)
+        sz=s[1]
+    else
+        sz=s[1:end]
+    end
+    return sz
+end
+export mysize
+
+
+export memberinds
+function memberinds(x,y)
+
+    ind=zeros(Int64,length(x),1)
+    for i=1:length(x)
+        for j=1:length(y)
+            if y[j]==x[i]
+                ind[i]=j;
+            end
+        end
+    end
+    return ind
+end
+
+
+export myvcat
+function myvcat(x,y)
+
+    if length(x)==0
+        return y
+    end
+
+    if length(y)==0
+        return x
+    end
+
+    return vcat(x,y)
+end
+
+
+
+export isavector
+function isavector(A)
+
+    if length(size(A))>2
+	return false
+    elseif  (size(A,1)==1 && size(A,2)>1) || (size(A,2)==1 && size(A,1)>1)
+	return true
+    else
+	return false
+    end
+
+end
+
+
+export numstates
+function numstates(A)
+    if isavector(A)
+        n=prod(size(A));
+    else
+        n=size(A);
+    end
+    return n
+end
+
+
+export replace
+function replace!(A,f,r)
+    A[find(A.=f)]=r
+end
+
+export findone
+function findone(A,c)
+
+    A, B=findn(A.==c)
+    A=A[1]; B=B[1]
+    return A,B
+end
+
+
+# Basic graph routines
+
+export neighboursize
+function neighboursize(A,nodes=[])
+    #NEIGHBOURSIZE number of neighbours in an undirected graph
+    #nsize=neighboursize(A,<node>)
+    # if node is missing return the neighbour sizes (including self) of each node
+    # If A is directed, returns the number of parents of the specified nodes
+    if isempty(nodes)
+        nsize=sum(A,1);
+    else
+        nsize=sum(A[:,vec(nodes)],1);
+    end
+    return nsize
+end
+
+
+export istree
+function istree(A,root=[];ReturnElimSeq=false)
+    #ISTREE Check if graph is singly-connected (a polytree)
+    # [tree, elimseq, schedule]=istree(A,<root>,<ReturnElimSeq>>)
+    #
+    # Input : an adjacency matrix A (zeros on diagonal)
+    #
+    # Outputs:
+    # tree = true if graph is singly connected, otherwise tree = 0
+    # elimseq is a variable elimination sequence in which simplical nodes of
+    # the tree are listed, as each simplical node is removed from the tree.
+    # schedule is the sequence of messages from node to node corresponding to elimseq
+    # If A is directed the elimination schedule begins with the nodes with no children
+    # If root is specified, the last node eliminated is root.
+
+    # If the graph is connected and the number of edges is less than the number of nodes, it must be a tree.
+    # However, to deal with the general case in which it is unknown if the graph is connected w check using elimination.
+    # A tree/singly-connected graph must admit a recursive simplical node elimination. That is t any stage
+    # in the elimination there must be a node with either zero or 1 neighbours in the remaining graph.
+
+    C = size(A,1); # number of nodes in the graph
+    schedule=zeros(Int,C,2);
+    tree=true; # assume A is singly connected
+    AA=copy(A); # adjacency of the eliminated graph
+    elimseq=[]; # set of variables eliminated (in sequence)
+
+    for node=1:C
+        # now find the number of neighbours:
+        nn=(C+1)*ones(1,C);  # ensures that we don't pick eliminated nodes
+        s=1:C; r=zeros(1,C);
+        r[elimseq]=1; # need to check this
+        s=s[find(r.==0)];
+        nn[s]=neighboursize(AA',s)
+        if !isempty(root)
+            nn[root]=C+1 # ensures we don't pick root
+        end
+
+        val, elim=findmin(nn) # find node with least number of neighbours
+        neigh = find(AA[:,vec(elim)]) # find the non zero elements
+
+        if length(neigh)>1; # if least has more than 1 neighbour, cannot be a tree
+            tree=false
+            break;
+        end
+
+        AA[vec(elim),:]=0;  AA[:,vec(elim)]=0; # eliminate node from graph
+        elimseq=[elimseq... elim]; # add eliminated node to elimination set
+
+        if isempty(neigh);  schedule[node,:]=[elim elim];
+        else
+            schedule[node,:]=[elim neigh];
+        end
+
+    end
+    if !tree;
+        if ReturnElimSeq
+            return false, [],[]
+        else
+            return false
+        end
+    end
+
+    c=[]
+    for i=1:size(schedule,1)
+        if schedule[i,1]!=schedule[i,2] # remove self elimination
+            c=[c... i]
+        end
+    end
+     if ReturnElimSeq
+         return tree, elimseq, schedule[vec(c),:]
+     else
+         return tree
+     end
+end
+
+
+
+import Base.findmax
+function findmax(A,variables;Ind2Sub=false)
+    #MAX Maximise a multi-dimensional array over a set of dimenions
+    # [maxval maxstate]=max(x,variables)
+    # find the values and states that maximize the multidimensional array x
+    # over the dimensions in maxover
+    #
+    maxval,maxind=findmax(A,variables)
+    if !Ind2Sub
+        return maxval, maxind
+    end
+
+    s=ind2sub(size(A),maxind[:]) # compatabilty with matlab BRML
+    maxstate=zeros(Int64,length(s[1]),length(s))
+    for i=1:length(s)
+        maxstate[:,i]=s[i]
+    end
+    return maxval, maxstate
+
+end
+
+
+export randgen
+function randgen(p)
+    p=p./sum(p)
+    f=find(rand().<cumsum(vec(p)))
+    return(int(minimum(f)))
+end
+
+
+export myipermutedims
+function myipermutedims{T<:AbstractArray}(A::T,d)
+    if length(d)==1 && d[1]==1
+        return A
+    else
+        ipermutedims(A,d)
+    end
+end
+
+
+export DictToArray
+function DictToArray(D)
+    if isa(D,Dict)
+        L=length(collect(keys(D)))
+        pot=Array(Any,L)
+        ky=collect(keys(D))
+        for k=1:length(keys(D))
+            pot[k]=D[ky[k]]
+        end
+        return pot
+    else
+        return D
+    end
+end
+
+export iskey
+function iskey(k::Any,D::Dict)
+    allkeys=collect(keys(D))
+    return any(k.==allkeys)
+end
+
+export condp
+function condp(p;DistributionIndices=[]) ## FIXME! This doesn't work when p is more than an 2D array
+    #function pnew=condp(pin,varargin)
+    #%CONDP Make a conditional distribution from an array
+    #% pnew=condp(pin,<distribution indices>)
+    #%
+    #% Input : pin  -- a positive matrix pin
+    #% Output:  matrix pnew such that sum(pnew,1)=ones(1,size(p,2))
+    #%
+    #% The optional input specifies which indices form the distribution variables.
+    #%
+    #%
+    #% For example:
+    #% r=rand([4 2 3]); p=condp(r,[3 1]);
+    #% p is now an array of the same size as r, but with sum(sum(p,3),1) equal
+    #% to 1 for each of the dimensions of the 2nd index.
+    #%
+    #% Note that p=condp(r,0) returns a normalised array p=r./sum(r(:));
+
+    p=p+realmin(); # in case all unnormalised probabilities are zero
+
+    if isempty(DistributionIndices)
+        p=p./repmat(sum(p,1),size(p,1),1)
+        return p
+    else
+    if DistributionIndices==0
+        p=p./sum(p[:])
+        return p
+    end
+        allvars=1:length(size(p))
+        sizevars=size(p)
+        condvars=setdiff(allvars,DistributionIndices)
+        newp=deepcopy(permutedims(p,[DistributionIndices condvars]))
+        newp=reshape(newp,prod(sizevars[DistributionIndices]),prod(sizevars[condvars]))
+        newp=newp./repmat(sum(newp,1),size(newp,1),1)
+        pnew=reshape(newp,sizevars[[DistributionIndices condvars]])
+        pnew=ipermutedims(pnew,[DistributionIndices condvars])
+        return pnew
+    end
+end
+
+
+export condexp
+function condexp(logp)
+    #%CONDEXP  Compute p\propto exp(logp);
+    pmax=maximum(logp,1)
+    P =size(logp,1)
+    return condp(exp(logp-repmat(pmax,P,1)))
+end
+
+
+
+end # end module
