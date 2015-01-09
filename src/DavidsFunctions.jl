@@ -1,6 +1,16 @@
 module DavidsFunctions
 # General helper functions:
 
+try
+    # using code similar to the one in HttpServer.jl
+    using Docile
+    eval(:(@docstrings(manual = ["../docs/DavidsFunctions.md"])))
+catch
+    macro doc(ex)
+        esc(ex.args[2].args[2])
+    end
+end
+
 import Base.vec
 function vec(v::Integer)
     return vec([v])
@@ -22,6 +32,13 @@ end
 export SparseIntMatrix
 
 export fillmatrix!
+@doc """ `fillmatrix` initialises a subarray of `A` with `val`
+
+* `A`         array to fill
+* `indsi`     vector/range of row indeces
+* `indsj`     vector/range of column indeces
+* `val`       value to fill with
+""" ->
 function  fillmatrix!(A,indsi,indsj,val)
     for i=indsi
         for j=indsj
@@ -33,9 +50,13 @@ end
 
 
 export states
+@doc """ `states` enumerates all states given the number of states of each variable
+
+* ns    vector with the total number of states for each variable
+""" ->
 function states(ns)
     # enumerate all states eg states([2 2 3]) (like ind2subv.m)
-    # first index changes the most (lie matlab)
+    # first index changes the most (like matlab)
     ns=fliplr(ns)
     n=length(ns)
     nstates=prod(vec(ns))
@@ -53,7 +74,9 @@ function states(ns)
 end
 
 
-
+@doc """ `standardise` transforms an one-dimensional array into a column vector, 
+otherwise leaves the input unchanged
+""" ->
 function standardise{T<:Number}(A::Array{T,})
     # If the array is a vector, make this a column vector, otherwise leave unchanged
     if isavector(A)
@@ -79,7 +102,6 @@ export mysize
 
 export memberinds
 function memberinds(x,y)
-
     ind=zeros(Int64,length(x),1)
     for i=1:length(x)
         for j=1:length(y)
