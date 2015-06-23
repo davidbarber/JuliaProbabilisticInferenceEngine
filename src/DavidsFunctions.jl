@@ -1,43 +1,49 @@
+
 module DavidsFunctions
 # General helper functions:
 
-try
-    # using code similar to the one in HttpServer.jl
-    using Docile
-    eval(:(@docstrings(manual = ["../docs/DavidsFunctions.md"])))
-catch
-    macro doc(ex)
-        esc(ex.args[2].args[2])
-    end
-end
+VERSION < v"0.4-" && using Docile
+@docstrings
 
-import Base.vec
+import Base: vec, findmax
+
+
+export vec
+@doc """ 
+ Creates a vector with 1 element of value v
+""" ->
 function vec(v::Integer)
     return vec([v])
 end
-export vec
 
+export maxarray
+@doc """
+ Finds the largest non-zero value of matrix **`A`**
+""" ->
 function maxarray(A)
     p,q,r=findnz(A)
     return maximum(r)
 end
-export maxarray
 
-#function SparseIntMatrix(M,N)
-#    return sparse(fill(0,M,N))
-#end
+export SparseIntMatrix
+@doc """
+ Initialises a new matrix of size **M x N**
+
+* `M`:     number of rows
+* `N`:     number of columns
+""" ->
 function SparseIntMatrix(M,N)
     return int(spzeros(M,N))
 end
-export SparseIntMatrix
 
 export fillmatrix!
-@doc """ `fillmatrix` initialises a subarray of `A` with `val`
+@doc """
+ Initialises a subarray of **`A`** with value **`val`**
 
-* `A`         array to fill
-* `indsi`     vector/range of row indeces
-* `indsj`     vector/range of column indeces
-* `val`       value to fill with
+* `A`:         array to fill
+* `indsi`:     vector/range of row indeces
+* `indsj`:     vector/range of column indeces
+* `val`:       value to fill with the elements
 """ ->
 function  fillmatrix!(A,indsi,indsj,val)
     for i=indsi
@@ -48,11 +54,11 @@ function  fillmatrix!(A,indsi,indsj,val)
     return A
 end
 
-
 export states
-@doc """ `states` enumerates all states given the number of states of each variable
+@doc """
+ Enumerates all states given the number of states of each variable from a given set similar to MATLAB _ind2subv_
 
-* ns    vector with the total number of states for each variable
+* `ns`:    vector with the total number of states for each variable
 """ ->
 function states(ns)
     # enumerate all states eg states([2 2 3]) (like ind2subv.m)
@@ -73,9 +79,10 @@ function states(ns)
     return fliplr(s.+1)
 end
 
-
-@doc """ `standardise` transforms an one-dimensional array into a column vector, 
-otherwise leaves the input unchanged
+export standardise
+@doc """
+ Transforms an one-dimensional array **`A`** of numerical values into a column vector,
+  otherwise it leaves the input unchanged
 """ ->
 function standardise{T<:Number}(A::Array{T,})
     # If the array is a vector, make this a column vector, otherwise leave unchanged
@@ -84,9 +91,13 @@ function standardise{T<:Number}(A::Array{T,})
     end
     return A
 end
-export standardise
 
+export mysize
+@doc """
+ Returns the size for each dimension of a vector or matrix
 
+* `a`:     vector or matrix to analyse
+""" ->
 function mysize(a)
     a=standardise(a)
     s=size(a)
@@ -97,10 +108,14 @@ function mysize(a)
     end
     return sz
 end
-export mysize
-
 
 export memberinds
+@doc """
+ Returns a vector mapping the indices of **`x`** and **`y`** for which the corresponding elements have the same value
+
+* `x`:     item to compare
+* `y`:     item to compare
+""" ->
 function memberinds(x,y)
     ind=zeros(Int64,length(x),1)
     for i=1:length(x)
@@ -113,10 +128,12 @@ function memberinds(x,y)
     return ind
 end
 
-
 export myvcat
+@doc """
+ Wrapper for standard **`vcat`** used for
+ backward compatibility from porting the MATLAB version of BRML code
+""" ->
 function myvcat(x,y)
-
     if length(x)==0
         return y
     end
@@ -128,23 +145,26 @@ function myvcat(x,y)
     return vcat(x,y)
 end
 
-
-
 export isavector
+@doc """
+ Verifies if matrix **`A`** has one of the dimensions of size **1**
+""" ->
 function isavector(A)
 
     if length(size(A))>2
-	return false
+        return false
     elseif  (size(A,1)==1 && size(A,2)>1) || (size(A,2)==1 && size(A,1)>1)
-	return true
+        return true
     else
-	return false
+        return false
     end
 
 end
 
-
 export numstates
+@doc """
+ Returns the number of elements of matrix **`A`**
+""" ->
 function numstates(A)
     if isavector(A)
         n=prod(size(A));
@@ -154,15 +174,19 @@ function numstates(A)
     return n
 end
 
-
 export replace
+@doc """
+ Finds the elements having value **`f`** in matrix **`A`** and replaces their value with **`r`**
+""" ->
 function replace!(A,f,r)
-    A[find(A.=f)]=r
+    A[find(A.==f)]=r
 end
 
 export findone
+@doc """
+ Returns the indices of the first element in matrix **`A`** that has the value **`c`**
+""" ->
 function findone(A,c)
-
     A, B=findn(A.==c)
     A=A[1]; B=B[1]
     return A,B
@@ -172,11 +196,18 @@ end
 # Basic graph routines
 
 export neighboursize
+@doc """
+ Returns the number of neighbours in an graph
+
+     nsize = neighboursize(A,<node>)
+
+* `A`: adjacency matrix of the graph
+* `node`: (_optional_) the node for which to find the number of neighbours
+
+If **`node`** is missing, return the neighbour sizes (including self) of each node.
+If **`A`** is directed, returns the number of parents of the specified node.
+""" ->
 function neighboursize(A,nodes=[])
-    #NEIGHBOURSIZE number of neighbours in an undirected graph
-    #nsize=neighboursize(A,<node>)
-    # if node is missing return the neighbour sizes (including self) of each node
-    # If A is directed, returns the number of parents of the specified nodes
     if isempty(nodes)
         nsize=sum(A,1);
     else
@@ -185,27 +216,33 @@ function neighboursize(A,nodes=[])
     return nsize
 end
 
-
 export istree
+@doc """
+ Checks if the input graph is singly-connected (a polytree)
+
+    [tree, elimseq, schedule] = istree(A, <root>=[]; <ReturnElimSeq>=false)
+
+##### Input : 
+* `A`: graph's adjacency matrix (zeros on diagonal)
+* `root`: (_optional_) root node of the graph
+
+##### Outputs:
+* `tree`: _true_ if graph is singly connected, otherwise _false_
+* `elimseq`: a variable elimination sequence in which simplical nodes of the tree are listed,
+ as each simplical node is removed from the tree.
+* `schedule`: the sequence of messages from node to node corresponding to elimseq
+
+If **`A`** is a directed graph, the elimination schedule begins with the nodes with no children.
+ If root is specified, the last node eliminated is root.
+
+If the graph is connected and the number of edges is less than the number of nodes,
+ it must be a tree. However, to deal with the general case in which it is unknown if the graph
+ is connected w check using elimination.
+
+A tree/singly-connected graph must admit a recursive simplical node elimination. That is at
+ any stage in the elimination there must be a node with either 0 or 1 neighbours in the remaining graph.
+""" ->
 function istree(A,root=[];ReturnElimSeq=false)
-    #ISTREE Check if graph is singly-connected (a polytree)
-    # [tree, elimseq, schedule]=istree(A,<root>,<ReturnElimSeq>>)
-    #
-    # Input : an adjacency matrix A (zeros on diagonal)
-    #
-    # Outputs:
-    # tree = true if graph is singly connected, otherwise tree = 0
-    # elimseq is a variable elimination sequence in which simplical nodes of
-    # the tree are listed, as each simplical node is removed from the tree.
-    # schedule is the sequence of messages from node to node corresponding to elimseq
-    # If A is directed the elimination schedule begins with the nodes with no children
-    # If root is specified, the last node eliminated is root.
-
-    # If the graph is connected and the number of edges is less than the number of nodes, it must be a tree.
-    # However, to deal with the general case in which it is unknown if the graph is connected w check using elimination.
-    # A tree/singly-connected graph must admit a recursive simplical node elimination. That is t any stage
-    # in the elimination there must be a node with either zero or 1 neighbours in the remaining graph.
-
     C = size(A,1); # number of nodes in the graph
     schedule=zeros(Int,C,2);
     tree=true; # assume A is singly connected
@@ -261,21 +298,26 @@ function istree(A,root=[];ReturnElimSeq=false)
      end
 end
 
+export findmax
+@doc """
+ Maximises a multi-dimensional array over a set of dimensions
+    
+    [maxval maxstate] = findmax(A, variables)
 
+* `A`:         array to fill
+* `variables`: <???>
 
-import Base.findmax
+Finds the values and states that maximize the multi-dimensional
+ array **`A`** over the dimensions in <???>maxover
+""" ->
 function findmax(A,variables;Ind2Sub=false)
-    #MAX Maximise a multi-dimensional array over a set of dimenions
-    # [maxval maxstate]=max(x,variables)
-    # find the values and states that maximize the multidimensional array x
-    # over the dimensions in maxover
-    #
+
     maxval,maxind=findmax(A,variables)
     if !Ind2Sub
         return maxval, maxind
     end
 
-    s=ind2sub(size(A),maxind[:]) # compatabilty with matlab BRML
+    s=ind2sub(size(A),maxind[:]) # compatibilty with matlab BRML
     maxstate=zeros(Int64,length(s[1]),length(s))
     for i=1:length(s)
         maxstate[:,i]=s[i]
@@ -284,16 +326,21 @@ function findmax(A,variables;Ind2Sub=false)
 
 end
 
-
 export randgen
+@doc """
+ Returns a random value from distribution **`p`**
+""" ->
 function randgen(p)
     p=p./sum(p)
     f=find(rand().<cumsum(vec(p)))
     return(int(minimum(f)))
 end
 
-
 export myipermutedims
+@doc """
+ Wrapper for **`ipermutedims`** used for backward compatibility
+ from porting the MATLAB version of BRML code
+""" ->
 function myipermutedims{T<:AbstractArray}(A::T,d)
     if length(d)==1 && d[1]==1
         return A
@@ -304,6 +351,10 @@ end
 
 
 export DictToArray
+@doc """
+ Copies the dictionary **D** values into a new vector
+ with the size equal to the number of keys in the dictionary
+""" ->
 function DictToArray(D)
     if isa(D,Dict)
         L=length(collect(keys(D)))
@@ -325,24 +376,30 @@ end
 #end
 
 export condp
-function condp(p;DistributionIndices=[]) ## FIXME! This doesn't work when p is more than an 2D array
-    #function pnew=condp(pin,varargin)
-    #%CONDP Make a conditional distribution from an array
-    #% pnew=condp(pin,<distribution indices>)
-    #%
-    #% Input : pin  -- a positive matrix pin
-    #% Output:  matrix pnew such that sum(pnew,1)=ones(1,size(p,2))
-    #%
-    #% The optional input specifies which indices form the distribution variables.
-    #%
-    #%
-    #% For example:
-    #% r=rand([4 2 3]); p=condp(r,[3 1]);
-    #% p is now an array of the same size as r, but with sum(sum(p,3),1) equal
-    #% to 1 for each of the dimensions of the 2nd index.
-    #%
-    #% Note that p=condp(r,0) returns a normalised array p=r./sum(r(:));
+@doc """
+ Creates a conditional distribution from an array
 
+    pnew = condp(pin, varargin)
+
+##### Input:
+* `pin`:      a positive matrix pin
+* `varargin`: optional input specifying which indices form the distribution variables
+
+##### Output:
+* `pnew`:    a new matrix with **`sum(pnew, 1) = ones(1, size(p, 2))`**
+    
+##### Example:
+    
+    r = rand([4 2 3]); 
+    p = condp(r, [3 1]);
+    
+**`p`** is now an array of the same size as **`r`**, but with **`sum(sum(p,3),1) = 1`** for each of the dimensions of the 2nd index.
+
+_Note:_ 
+
+**`p=condp(r,0)`** returns a normalised array **`p = r./sum(r(:))`**
+""" ->
+function condp(p;DistributionIndices=[]) ## FIXME! This doesn't work when p is more than an 2D array
     p=p+realmin(); # in case all unnormalised probabilities are zero
 
     if isempty(DistributionIndices)
@@ -365,15 +422,15 @@ function condp(p;DistributionIndices=[]) ## FIXME! This doesn't work when p is m
     end
 end
 
-
 export condexp
+@doc """
+ Computes **`p`** proportional to **`exp(log p)`**
+""" ->
 function condexp(logp)
-    #%CONDEXP  Compute p\propto exp(logp);
     pmax=maximum(logp,1)
     P =size(logp,1)
     return condp(exp(logp-repmat(pmax,P,1)))
 end
 
 
-
-end # end module
+end #module
