@@ -382,24 +382,23 @@ export condp
     pnew = condp(pin, varargin)
 
 ##### Input:
-* `pin`:      a positive matrix pin
+* `pin`:      a positive matrix
 * `varargin`: optional input specifying which indices form the distribution variables
 
 ##### Output:
 * `pnew`:    a new matrix with **`sum(pnew, 1) = ones(1, size(p, 2))`**
-    
+
 ##### Example:
-    
-    r = rand([4 2 3]); 
-    p = condp(r, [3 1]);
-    
+    r = rand(4, 2, 3); 
+    p = condp(r, DistributionIndices=[3 1]);
+
 **`p`** is now an array of the same size as **`r`**, but with **`sum(sum(p,3),1) = 1`** for each of the dimensions of the 2nd index.
 
-_Note:_ 
+*Note:*
 
 **`p=condp(r,0)`** returns a normalised array **`p = r./sum(r(:))`**
 """ ->
-function condp(p;DistributionIndices=[]) ## FIXME! This doesn't work when p is more than an 2D array
+function condp(p; DistributionIndices=[]) ## FIXME! This doesn't work when p is more than an 2D array
     p=p+realmin(); # in case all unnormalised probabilities are zero
 
     if isempty(DistributionIndices)
