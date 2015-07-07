@@ -1,4 +1,4 @@
-function demoHMM()
+function demoHMMInferenceSimple()
 
     V=5  # number of visible states
     H=10 # numbmer of hidden states

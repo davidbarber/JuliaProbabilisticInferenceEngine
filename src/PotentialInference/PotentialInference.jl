@@ -2,14 +2,6 @@ module PotentialInference
 
 importall DavidsFunctions
 
-PotentialsPath="$(pwd())\\src\\PotentialInference\\Potentials"
-PotentialInferencePath="$(pwd())\\src\\PotentialInference"
-AlgorithmsPath="$(pwd())\\src\\PotentialInference\\Algorithms"
-
-PotentialsPathUNIX="$(pwd())/src/PotentialInference/Potentials"
-PotentialInferencePathUNIX="$(pwd())/src/PotentialInference"
-AlgorithmsPathUNIX="$(pwd())/src/PotentialInference/Algorithms"
-
 # Type definitions:
 
 export Potential, DiscretePotential, ArrayPotential
@@ -80,31 +72,16 @@ type PotLogArray <: ArrayPotential
     end
 end
 
-# Windows:
 try
-    # Potentials:
-    include("$(PotentialsPath)\\ArrayPotential.jl")
-    include("$(PotentialsPath)\\Potential.jl")
-    include("$(PotentialsPath)\\PotArray.jl")
-    include("$(PotentialsPath)\\PotConst.jl")
-    include("$(PotentialsPath)\\PotLogArray.jl")
-
-    # Inference Algorithms:
-    include("$(AlgorithmsPath)\\FactorGraph.jl")
+    current_path = joinpath((pwd()), "src", "PotentialInference")
+    PotentialsPath = joinpath(current_path, "Potentials")
+    AlgorithmsPath = joinpath(current_path, "Algorithms")
+    include(joinpath(PotentialsPath, "ArrayPotential.jl"))
+    include(joinpath(PotentialsPath, "Potential.jl"))
+    include(joinpath(PotentialsPath, "PotArray.jl"))
+    include(joinpath(PotentialsPath, "PotConst.jl"))
+    include(joinpath(PotentialsPath, "PotLogArray.jl"))
+    include(joinpath(AlgorithmsPath, "FactorGraph.jl"))
 end
 
-# Unix:
-try
-    # Potentials:
-    include("$(PotentialsPathUNIX)/ArrayPotential.jl")
-    include("$(PotentialsPathUNIX)/Potential.jl")
-    include("$(PotentialsPathUNIX)/PotArray.jl")
-    include("$(PotentialsPathUNIX)/PotConst.jl")
-    include("$(PotentialsPathUNIX)/PotLogArray.jl")
-
-    # Inference Algorithms:
-    include("$(AlgorithmsPathUNIX)/FactorGraph.jl")
-end
-
-
-end
+end # module

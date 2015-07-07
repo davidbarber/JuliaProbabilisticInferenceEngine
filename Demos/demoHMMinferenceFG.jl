@@ -1,4 +1,4 @@
-function demoHMMinferenceFG()
+function demoHMMInferenceFG()
     H = 6 # number of Hidden states
     V = 2 # number of Visible states
     T = 5 # length of the time-series

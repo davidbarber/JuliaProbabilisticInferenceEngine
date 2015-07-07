@@ -1,21 +1,15 @@
 module brml
 
-if OS_NAME == :Windows
-    push!(LOAD_PATH,"$(pwd())\\src")
-    push!(LOAD_PATH,"$(pwd())\\src\\HMM")
-    push!(LOAD_PATH,"$(pwd())\\src\\GraphPlot")
-    push!(LOAD_PATH,"$(pwd())\\src\\PotentialInference")
-    push!(LOAD_PATH,"$(pwd())\\Demos")
-else
-    push!(LOAD_PATH,"$(pwd())/src")
-    push!(LOAD_PATH,"$(pwd())/src/HMM")
-    push!(LOAD_PATH,"$(pwd())/src/GraphPlot")
-    push!(LOAD_PATH,"$(pwd())/src/PotentialInference")
-    push!(LOAD_PATH,"$(pwd())/Demos")
-end
+push!(LOAD_PATH, joinpath(pwd(), "src"))
+
+# push all subdirectories from src
+map(d -> push!(LOAD_PATH, joinpath(pwd(), "src", d)), 
+    filter(d -> isdir(joinpath("src", d)), readdir("src")))
+
+push!(LOAD_PATH, joinpath(pwd(), "Demos"))
 
 println("\nAvailable Demos:\n")
-demos=union(readdir("Demos"),readdir("./src/HMM"))
+demos=readdir("Demos")
 for i=1:length(demos)
     try
         if demos[i][1:4]=="demo" && demos[i][end-2:end]==".jl"

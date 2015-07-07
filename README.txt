@@ -8,6 +8,6 @@ start julia and then from within julia type:
 julia> cd("directory where this README file is")
 julia> using brml
 julia> demoBurglar()
-julia> demoHMM()
+julia> demoHMMInferenceSimple()
 
 and similarly for the other demos.
