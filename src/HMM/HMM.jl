@@ -1,6 +1,6 @@
 module HMM
-importall DavidsFunctions
-    #@reexport using DavidsFunctions, HMM, GraphPlot, Winston ## CHECK!!!
+importall BrmlFunctions
+#@reexport using BrmlFunctions, HMM, GraphPlot, Winston ## CHECK!!!
 
 export HMMforward
 include("HMMforward.jl")

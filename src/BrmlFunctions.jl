@@ -1,5 +1,5 @@
 
-module DavidsFunctions
+module BrmlFunctions
 # General helper functions:
 
 VERSION < v"0.4-" && using Docile

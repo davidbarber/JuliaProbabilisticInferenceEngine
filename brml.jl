@@ -21,6 +21,6 @@ end
 
 using Reexport
 
-@reexport using DavidsFunctions, HMM, PotentialInference, GraphPlot
+@reexport using BrmlFunctions, HMM, PotentialInference, GraphPlot
 
 end

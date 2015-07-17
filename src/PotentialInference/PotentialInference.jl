@@ -1,6 +1,6 @@
 module PotentialInference
 
-importall DavidsFunctions
+importall BrmlFunctions
 
 # Type definitions:
 

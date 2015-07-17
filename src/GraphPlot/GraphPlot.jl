@@ -1,7 +1,7 @@
 module GraphPlot
 
 
-importall DavidsFunctions
+importall BrmlFunctions
 using PyPlot
 
 export VariablePlot
