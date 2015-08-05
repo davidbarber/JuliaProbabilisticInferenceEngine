@@ -18,7 +18,7 @@ function HMMbackward(v,phghm,pvgh)
     beta=ones(H,T)
     for t=T:-1:2
         tmp=phghmtrans*(beta[:,t].*pvghtrans[:,v[t]])
-	beta[:,t-1]=tmp./sum(tmp)
+        beta[:,t-1]=tmp./sum(tmp)
     end
     return beta
 

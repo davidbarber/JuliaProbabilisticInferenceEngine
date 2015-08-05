@@ -1,4 +1,4 @@
-# DavidsFunctions
+# BrmlFunctions
 
 ## Exported
 
@@ -11,7 +11,7 @@
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:357](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L357)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:357](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L357)
 
 ---
 
@@ -24,7 +24,7 @@
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:34](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L34)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:34](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L34)
 
 ---
 
@@ -34,7 +34,7 @@
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:428](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L428)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:427](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L427)
 
 ---
 
@@ -45,26 +45,25 @@
     pnew = condp(pin, varargin)
 
 ##### Input:
-* `pin`:      a positive matrix pin
+* `pin`:      a positive matrix
 * `varargin`: optional input specifying which indices form the distribution variables
 
 ##### Output:
 * `pnew`:    a new matrix with **`sum(pnew, 1) = ones(1, size(p, 2))`**
-    
+
 ##### Example:
-    
-    r = rand([4 2 3]); 
-    p = condp(r, [3 1]);
-    
+    r = rand(4, 2, 3); 
+    p = condp(r, DistributionIndices=[3 1]);
+
 **`p`** is now an array of the same size as **`r`**, but with **`sum(sum(p,3),1) = 1`** for each of the dimensions of the 2nd index.
 
-_Note:_ 
+*Note:*
 
 **`p=condp(r,0)`** returns a normalised array **`p = r./sum(r(:))`**
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:401](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L401)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:400](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L400)
 
 ---
 
@@ -79,7 +78,7 @@ _Note:_
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:47](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L47)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:47](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L47)
 
 ---
 
@@ -97,7 +96,7 @@ Finds the values and states that maximize the multi-dimensional
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:312](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L312)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:312](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L312)
 
 ---
 
@@ -107,7 +106,7 @@ Finds the values and states that maximize the multi-dimensional
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:188](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L188)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:188](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L188)
 
 ---
 
@@ -117,7 +116,7 @@ Finds the values and states that maximize the multi-dimensional
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:151](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L151)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:151](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L151)
 
 ---
 
@@ -149,7 +148,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:244](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L244)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:244](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L244)
 
 ---
 
@@ -181,7 +180,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:244](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L244)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:244](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L244)
 
 ---
 
@@ -191,7 +190,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:22](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L22)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:22](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L22)
 
 ---
 
@@ -204,7 +203,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:118](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L118)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:118](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L118)
 
 ---
 
@@ -215,7 +214,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:343](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L343)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:343](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L343)
 
 ---
 
@@ -227,7 +226,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:100](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L100)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:100](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L100)
 
 ---
 
@@ -238,7 +237,7 @@ A tree/singly-connected graph must admit a recursive simplical node elimination.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:135](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L135)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:135](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L135)
 
 ---
 
@@ -256,7 +255,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:209](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L209)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:209](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L209)
 
 ---
 
@@ -274,7 +273,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:209](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L209)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:209](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L209)
 
 ---
 
@@ -284,7 +283,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:167](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L167)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:167](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L167)
 
 ---
 
@@ -294,7 +293,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:332](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L332)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:332](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L332)
 
 ---
 
@@ -305,7 +304,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:86](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L86)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:86](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L86)
 
 ---
 
@@ -317,7 +316,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:62](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L62)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:62](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L62)
 
 ---
 
@@ -327,7 +326,7 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:14](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L14)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:14](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L14)
 
 ## Internal
 
@@ -339,5 +338,5 @@ If **`A`** is directed, returns the number of parents of the specified node.
 
 
 *source:*
-[/Users/elfflorin/Documents/Projects/julia.hw/JuliaProbabilisticInferenceEngine/src/DavidsFunctions.jl:180](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/c3bf30f31be41743f46c4bdb7d4e9005f43dd8da/src/DavidsFunctions.jl#L180)
+[/Users/elfflorin/Documents/Projects/julia.hw/jpie/src/BrmlFunctions.jl:180](https://github.com/davidbarber/JuliaProbabilisticInferenceEngine/tree/b469ac67586c10247ab2baeeb0aeda089f041694/src/BrmlFunctions.jl#L180)
 

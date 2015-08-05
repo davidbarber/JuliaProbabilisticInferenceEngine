@@ -220,7 +220,7 @@ export istree
 @doc """
  Checks if the input graph is singly-connected (a polytree)
 
-    [tree, elimseq, schedule] = istree(A, <root>=[]; <ReturnElimSeq>=false)
+    tree, elimseq, schedule = istree(A, <root>=[]; <ReturnElimSeq>=false)
 
 ##### Input : 
 * `A`: graph's adjacency matrix (zeros on diagonal)
