@@ -1,4 +1,4 @@
-function demoHMMlearn()
+function demoHMMLearn()
     V = 2  # number of visible states
     H = 3 # number of hidden states
     N = 10 # number of sequences to analyze
@@ -29,10 +29,8 @@ function demoHMMlearn()
         end
     end
 
-    opts = HmmOptions(true, 30)
-
     # EM algorithm (see if we can recover the true HMM parameters):
-    phghm, ph1, pvgh, loglik = HMMem(v, H, V, opts)
+    phghm, ph1, pvgh, loglik = HMMem(v, H, V, MaxIterations=20)
 
     # visualise the results
     # get sorting indices for initial probabilities

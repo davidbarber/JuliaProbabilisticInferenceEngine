@@ -19,15 +19,15 @@ function HMMforward(v,phghm,ph1,pvgh;UseLogArray=true)
     if !UseLogArray # alpha recursion (not recommended due to numerical underflow)
         z=zeros(1,T)
         alpha=zeros(H,T)
-	alpha[:,1] = pvgh[v[1],:]'.*ph1
+        alpha[:,1] = pvgh[v[1],:]'.*ph1
         z[1]=sum(alpha[:,1])
         alpha[:,1]=condp(alpha[:,1])
-	for t=2:T
-	    alpha[:,t]=pvgh[v[t],:]'.*(phghm*alpha[:,t-1])
+        for t=2:T
+            alpha[:,t]=pvgh[v[t],:]'.*(phghm*alpha[:,t-1])
             z[t]=sum(alpha[:,t])
             alpha[:,t]=condp(alpha[:,t])
-	end
-	loglik = sum(log(z)) # log likelihood
+        end
+        loglik = sum(log(z)) # log likelihood
     end
 
     if UseLogArray

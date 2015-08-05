@@ -16,9 +16,9 @@ function HMMbackward(v,phghm,pvgh;UseLogArray=true)
     if !UseLogArray # beta recursion (not recommended due to numerical underflow)
         beta=zeros(H,T)
         beta[:,T]=ones(H,1)
-	for t=T:-1:2
-	    beta[:,t-1]=phghm'*(beta[:,t].*pvgh[v[t],:]')
-	end
+        for t=T:-1:2
+            beta[:,t-1]=phghm'*(beta[:,t].*pvgh[v[t],:]')
+        end
         return log(beta)
     end
     

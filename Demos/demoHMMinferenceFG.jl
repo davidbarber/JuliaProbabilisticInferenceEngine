@@ -1,4 +1,5 @@
 function demoHMMInferenceFG()
+
     H = 6 # number of Hidden states
     V = 2 # number of Visible states
     T = 5 # length of the time-series
@@ -52,7 +53,6 @@ function demoHMMInferenceFG()
         rawmarg=condpot(prod(newpot),ht)
         sumprodmarg=condpot(marg[ht],ht)
         println([sumprodmarg.content rawmarg.content])
-
     end
 
 end
