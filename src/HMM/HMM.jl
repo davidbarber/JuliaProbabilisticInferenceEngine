@@ -2,8 +2,6 @@ module HMM
 importall BrmlFunctions
 #@reexport using BrmlFunctions, HMM, GraphPlot, Winston ## CHECK!!!
 
-using Lexicon
-
 export HMMforward
 include("HMMforward.jl")
 
