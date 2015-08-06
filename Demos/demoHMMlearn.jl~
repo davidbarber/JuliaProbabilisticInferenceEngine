@@ -1,4 +1,4 @@
-function demoHMMlearn()
+function demoHMMLearn()
     V = 2  # number of visible states
     H = 3 # number of hidden states
     N = 10 # number of sequences to analyze
@@ -19,18 +19,18 @@ function demoHMMlearn()
         # initialize the current sequences
         h[n] = zeros(Int, T[n])  # type: Array{Int64,1}
         v[n] = zeros(Int, T[n])
-
+        
         # populate the current sequences with random states based on transition and emission probabilities
         h[n][1] = randgen(ph1_true)
         v[n][1] = randgen(pvgh_true[:, h[n][1]])
         for t = 2:T[n]
-            h[n][t] = randgen(phghm_true[:, h[n][t - 1]])
-            v[n][t] = randgen(pvgh_true[:, h[n][t]])
+            h[n][t] = randgen(phghm_true[:, h[n][t - 1]])        
+            v[n][t] = randgen(pvgh_true[:, h[n][t]])      
         end
     end
 
     # EM algorithm (see if we can recover the true HMM parameters):
-    phghm, ph1, pvgh, loglik = HMMem(v, H, V, MaxIterations=20, PlotProgress=true)
+    phghm, ph1, pvgh, loglik = HMMem(v, H, V, MaxIterations=20)
 
     # visualise the results
     # get sorting indices for initial probabilities
