@@ -9,6 +9,9 @@ function HMMbackward(v,phghm,pvgh;UseLogArray=true)
     #% 
     #% Outputs:
     #% logbeta: log beta messages: log p(v(t+1:T)|h(t))
+    #           p(v(t:T)|h(t)) = sum_{h(t)} {p(v(t)| h(t)) * p(h(t)|h(t-1)) * p(v(t+1:T)|h(t))}
+    #           beta(t-1) = p(v(t:T)|h(t)
+    #           beta(t) = p(v(t+1:T)|h(t)
     #% See also HMMbackward.m, HMMviterbi.m, demoHMMinference.m
     
     T=length(v); H=size(phghm,1)

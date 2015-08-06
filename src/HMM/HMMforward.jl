@@ -10,6 +10,9 @@ function HMMforward(v,phghm,ph1,pvgh;UseLogArray=true)
     #
     # Outputs:
     # alpha : p(h(t)|v(1:t))
+    #           p(h(t)|v(1:t)) = p(v(t)|h(t)) * sum_{h(t-1)} {p(h(t)|h(t-1)) * p(h(t-1)|v(1:t-1))}
+    #           alpha(t) = p(h(t)|v(1:t))
+    #           alpha(t-1) = p(h(t-1)|v(1:t-1))
     # loglik : sequence log likelihood log p(v(1:T))
 
     T=length(v); H=length(ph1);
@@ -21,7 +24,7 @@ function HMMforward(v,phghm,ph1,pvgh;UseLogArray=true)
     z[1]=sum(alpha[:,1])
     alpha[:,1]=alpha[:,1]./z[1]
     for t=2:T
-	alpha[:,t]=pvghtrans[:,v[t]].*(phghm*alpha[:,t-1])
+    alpha[:,t]=pvghtrans[:,v[t]].*(phghm*alpha[:,t-1])
         z[t]=sum(alpha[:,t])
         alpha[:,t]=alpha[:,t]./z[t]
     end

@@ -28,18 +28,18 @@ function permutedims(A::LogArray,I::Array{Int64,1})
 end
 
 function *(A::LogArray,B::LogArray)
-logprefactor=maximum([maximum(A.content[:]) maximum(B.content[:])]);
-AA=exp(A.content-logprefactor)
-BB=exp(B.content-logprefactor)
+    logprefactor=maximum([maximum(A.content[:]) maximum(B.content[:])]);
+    AA=exp(A.content-logprefactor)
+    BB=exp(B.content-logprefactor)
     L=LogArray(1);
     L.content=2*logprefactor+log(AA*BB)
     return L
 end
 
 function +(A::LogArray,B::LogArray)
-logprefactor=maximum([maximum(A.content[:]) maximum(B.content[:])]);
-AA=exp(A.content-logprefactor)
-BB=exp(B.content-logprefactor)
+    logprefactor=maximum([maximum(A.content[:]) maximum(B.content[:])]);
+    AA=exp(A.content-logprefactor)
+    BB=exp(B.content-logprefactor)
     L=LogArray(1);
     L.content=logprefactor+log(AA+BB)
     return L
@@ -47,8 +47,8 @@ end
 
 import Base.sum
 function sum(A::LogArray,I...)
-logprefactor=maximum(A.content[:])
-AA=exp(A.content-logprefactor)
+    logprefactor=maximum(A.content[:])
+    AA=exp(A.content-logprefactor)
     L=LogArray(1)
     L.content=logprefactor+log(sum(AA,I...))
     return L
