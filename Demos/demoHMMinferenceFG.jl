@@ -1,4 +1,4 @@
-function demoHMMInferenceFG()
+function demoHMMinferenceFG()
 
     H = 6 # number of Hidden states
     V = 2 # number of Visible states
