@@ -24,7 +24,7 @@ function HMMforward(v,phghm,ph1,pvgh;UseLogArray=true)
     z[1]=sum(alpha[:,1])
     alpha[:,1]=alpha[:,1]./z[1]
     for t=2:T
-    alpha[:,t]=pvghtrans[:,v[t]].*(phghm*alpha[:,t-1])
+        alpha[:,t]=pvghtrans[:,v[t]].*(phghm*alpha[:,t-1])
         z[t]=sum(alpha[:,t])
         alpha[:,t]=alpha[:,t]./z[t]
     end
