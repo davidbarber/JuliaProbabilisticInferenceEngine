@@ -431,5 +431,20 @@ function condexp(logp)
     return condp(exp(logp-repmat(pmax,P,1)))
 end
 
+export validgridposition
+@doc """
+ Returns `true` if point (x, y) is on a defined grid (1:Gx, 1:Gy)
+
+    v = validgridposition(x, y, Gx, Gy)
+""" ->
+function validgridposition(x, y, Gx, Gy)
+    if x > Gx || x < 1
+        return false
+    end
+    if y > Gy || y < 1
+        return false
+    end
+    return true
+end
 
 end #module

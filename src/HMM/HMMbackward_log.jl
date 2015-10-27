@@ -25,15 +25,13 @@ function HMMbackward(v,phghm,pvgh;UseLogArray=true)
         return log(beta)
     end
     
-    if UseLogArray
-        logpvgh=LogArray(log(pvgh))
-        logphghm=LogArray(log(phghm))
-        logbetaoutput=zeros(H,T)
-        logbeta = LogArray(zeros(H,1))
-        for t=2:T
-            logbeta=logphghm.'*(logbeta.*logpvgh[v[t],:].')
-            logbetaoutput[:,t]=(logbeta).content
-        end
+    logpvgh=LogArray(log(pvgh))
+    logphghm=LogArray(log(phghm))
+    logbetaoutput=zeros(H,T)
+    logbeta = LogArray(zeros(H,1))
+    for t=2:T
+        logbeta=logphghm.'*(logbeta.*logpvgh[v[t],:].')
+        logbetaoutput[:,t]=(logbeta).content
     end
     
     return logbetaoutput

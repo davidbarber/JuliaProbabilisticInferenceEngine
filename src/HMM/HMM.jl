@@ -8,6 +8,9 @@ include("HMMforward.jl")
 export HMMbackward
 include("HMMbackward.jl")
 
+export HMMgamma
+include("HMMgamma.jl")
+
 export HMMsmooth
 include("HMMsmooth.jl")
 

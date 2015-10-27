@@ -1,4 +1,4 @@
-function demoHMMInferenceSimple()
+function demoHMMinferenceSimple()
 
     V = 5  # number of visible states
     H = 10 # number of hidden states
